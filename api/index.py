@@ -15,7 +15,7 @@ async def process_update(request: Request):
     ptb = (
     Application.builder()
     .updater(None)
-    .token("7897490261:AAFMKWSSK0wHuSHlROpQH5WW9v4VsSTlkoA") 
+    .token("7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4") 
     .read_timeout(7)
     .get_updates_read_timeout(42)
     .build()
