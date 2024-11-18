@@ -4,7 +4,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKey
 from telegram.ext import Application, CommandHandler,CallbackQueryHandler,MessageHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
-from dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent
+from dbActions import askPayment, getUserStatById,registerAgent,getUserById,getOwnAgent
 
 
 app = FastAPI()
@@ -18,7 +18,6 @@ def getReplyMarkUp():
     ]
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
     return reply_markup
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     reply_markup = getReplyMarkUp()
     
@@ -61,7 +60,7 @@ async def button(update:Update,context:CallbackContext):
     elif query.data == "2":
         await getStudentReferral(update,context)
 async def getAmount(update:Update,context:ContextTypes.DEFAULT_TYPE):
-    stat , ref =  getUserStatById(str(update.message.from_user.id))
+    stat , _ =  getUserStatById(str(update.message.from_user.id))
     if stat:
         curAmount = stat["totalAmount"]
         await update.message.reply_text(f"Your current Amount is : {curAmount}")
@@ -69,7 +68,7 @@ async def getAmount(update:Update,context:ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"You haven't registered yet! Press /start button to register")
     return
 async def getNumberOfStud(update:Update,context:ContextTypes.DEFAULT_TYPE):
-    stat,ref = getUserStatById(str(update.message.from_user.id))
+    stat,_ = getUserStatById(str(update.message.from_user.id))
     if stat:
         numStud = stat["ownStud"]
         await update.message.reply_text(f"You referred {numStud} students. Keep the great work!")
@@ -139,7 +138,6 @@ async def process_update(request: Request):
    )
     await ptb.initialize()
     ptb.add_handler(CommandHandler("start", start))
-    ptb.add_handler(CommandHandler("start", start))
     ptb.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND,options))
     ptb.add_handler(CallbackQueryHandler(button))
     req = await request.json()
@@ -150,7 +148,15 @@ async def process_update(request: Request):
 @app.get("/")
 def index(request:Request):
     return {"message": "Hello World"}
-
+@app.post("/register")
+async def register(request:Request):
+    
+    data = await request.json()
+    try:
+        registerAgent(data,"133thhtht")
+        return {"message":"ok"}
+    except Exception as e:
+        return {"message":e}
 #https://victory-fast.vercel.app/
 # https://api.telegram.org/bot7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4/setWebhook?url=https://agent-fast.vercel.app
 # https://api.telegram.org/bot7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4/setWebhook?url=https://victoryagentbotfastapi.vercel.app/
