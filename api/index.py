@@ -3,14 +3,13 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
-from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent
+from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent,intro_text
 
 
 app = FastAPI()
 async def start(update, _: ContextTypes.DEFAULT_TYPE):
-    keyboard = [[InlineKeyboardButton("Visit Web App", web_app={"url": "https://victory-contest.vercel.app/"})]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Welcome! Click the button below to visit our web app.", reply_markup=reply_markup)
+    
+    await update.message.reply_text(intro_text)
 async def getAgentReferal(update: Update, context: CallbackContext):
     user_id = str(update.callback_query.from_user.id)  # Get user ID from the callback query
     stat,userRef = getUserStatById(user_id)
@@ -94,6 +93,18 @@ async def ownAgent(update:Update,context:CallbackContext):
     agents = getOwnAgent(userRef)
     await update.message.reply_text(f"{agents} are registered under you!")
     return
+async def register(update,context:CallbackContext):
+    keyboard = [[InlineKeyboardButton("Register", web_app={"url": "https://victory-contest.vercel.app/"})]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    user_id = str(update.message.from_user.id)
+    user_name = update.message.from_user.full_name
+    Agents = getUserInfo()
+    for key in Agents:
+        curAgent = Agents[key]["teleid"]
+        if user_id == curAgent:
+            await update.message.reply_text("You're already registered as an agent!")
+            return
+    await update.message.reply_text(f"Hello {user_name}! Now you're applying to register as an agent. Please press the button below to register.", reply_markup=reply_markup)
 async def options(update:Update,context:CallbackContext):
     text = update.message.text
     if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
