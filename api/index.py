@@ -10,7 +10,7 @@ async def start(update, _: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton("Visit Web App", web_app={"url": "https://victory-contest.vercel.app/"})]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Welcome! Click the button below to visit our web app.", reply_markup=reply_markup)
-async def options(update,_,context:ContextTypes.DEFAULT_TYPE):
+async def options(update,_:ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     
     await update.message.reply_text("Hey baby what's up")
