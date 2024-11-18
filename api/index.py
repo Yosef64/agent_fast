@@ -1,16 +1,29 @@
 from contextlib import asynccontextmanager
 from http import HTTPStatus
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
 
 
 app = FastAPI()
-async def start(update, _: ContextTypes.DEFAULT_TYPE):
-    keyboard = [[InlineKeyboardButton("Visit Web App", web_app={"url": "https://victory-contest.vercel.app/"})]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Welcome! Click the button below to visit our web app.", reply_markup=reply_markup)
+
+def getReplyMarkUp():
+    keyboard = [
+        ["📝 ለኤጀንት ምዝገባ", "🔗 Referral link ለማግኘት"],
+        ["💰 ብር ለማውጣት","📊 በስራቹ የገቡ የተማሪዎች ብዛት"],
+        ["💵 ቀሪ ሂሳብ ለማወቅ","🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት"],
+        ["በስራቹ የተመዘገቡ ኤጀንቶች ብዛት"]
+    ]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+    return reply_markup
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    reply_markup = getReplyMarkUp()
+    
+    await update.message.reply_text(
+        "Hello biach",reply_markup=reply_markup
+    )
 @app.post("/")
 async def process_update(request: Request):
     ptb = (
@@ -33,7 +46,7 @@ def index(request:Request):
     return {"message": "Hello World"}
 
 #https://victory-fast.vercel.app/
-# https://api.telegram.org/bot7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4/setWebhook?url=https://victoryagentbotfastapi.vercel.app
+# https://api.telegram.org/bot7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4/setWebhook?url=https://agent-fast.vercel.app
 # https://api.telegram.org/bot7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4/setWebhook?url=https://victoryagentbotfastapi.vercel.app/
 # 
 # 
