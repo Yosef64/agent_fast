@@ -12,7 +12,6 @@ async def start(update, _: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Welcome! Click the button below to visit our web app.", reply_markup=reply_markup)
 async def options(update,_:ContextTypes.DEFAULT_TYPE):
     text = update.message.text
-    
     await update.message.reply_text("Hey baby what's up")
 @app.post("/")
 async def process_update(request: Request):
