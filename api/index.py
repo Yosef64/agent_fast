@@ -11,7 +11,7 @@ async def start(update, _: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton("Visit Web App", web_app={"url": "https://victory-contest.vercel.app/"})]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Welcome! Click the button below to visit our web app.", reply_markup=reply_markup)
-async def getAgentReferal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def getAgentReferal(update: Update, context: CallbackContext):
     user_id = str(update.callback_query.from_user.id)  # Get user ID from the callback query
     stat,userRef = getUserStatById(user_id)
 
@@ -25,7 +25,7 @@ async def getAgentReferal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.callback_query.message.reply_text(f"You haven't registered as an agent yet! \nTo register -> /register")
     return
 
-async def getStudentReferral(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def getStudentReferral(update: Update, context: CallbackContext):
     userRef = getUserById(str(update.callback_query.from_user.id))
     if userRef:
         await update.callback_query.message.reply_text(f"Your Student referral link is: https://t.me/victoryacademy_Bot?start={userRef}")
@@ -124,7 +124,7 @@ async def process_update(request: Request):
     ptb.add_handler(CommandHandler("start", start))
     ptb.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND,options))
     req = await request.json()
-    
+    print(req)
     update = Update.de_json(req, ptb.bot)
     await ptb.process_update(update)
     return Response(status_code=HTTPStatus.OK)
