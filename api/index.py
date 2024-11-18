@@ -109,6 +109,8 @@ async def options(update:Update,context:CallbackContext):
     text = update.message.text
     if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
         await getNumberOfTeamStud(update,context)
+    elif text == "📝 ለኤጀንት ምዝገባ":
+        await register(update,context)
     elif text == "💰 ብር ለማውጣት":
         await payMe(update,context)
     elif text == "🔗 Referral link ለማግኘት":
