@@ -1,5 +1,5 @@
 
-from uuid import uuid4
+from nanoid import generate
 from .db import db
 from datetime import datetime
 userInfo_ref = db.collection("Agents").document("agentInfo")
@@ -26,7 +26,7 @@ def updateUserStat(referal):
         curParent , ind = users[curParent]["parent"] , ind + 1
 def registerAgent(userInfo,referal):
     agentStat = {"ownStud":0,"agentStud":0,"parent":str(referal),"timestamp":[],"totalAmount":0}
-    userReferal = str(uuid4()).replace("-", "")
+    userReferal = generate(size=10)
     userInfo_ref.update({userReferal:userInfo})
     userStat_ref.update({userReferal:agentStat})
 def getUserById(userId):
