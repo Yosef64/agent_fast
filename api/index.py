@@ -13,7 +13,7 @@ async def start(update, _: ContextTypes.DEFAULT_TYPE):
 async def options(update:Update,_,context:CallbackContext):
     text = update.message.text
     
-    await update.message.reply_text(text)
+    await update.message.reply_text("Hey baby what's up")
 @app.post("/")
 async def process_update(request: Request):
     ptb = (
