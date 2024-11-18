@@ -3,7 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
-from dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent
+from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent
 
 
 app = FastAPI()
@@ -108,9 +108,7 @@ async def options(update:Update,context:CallbackContext):
         await getNumberOfStud(update,context)
     elif text == "በስራቹ የተመዘገቡ ኤጀንቶች ብዛት":
         await ownAgent(update,context)
-async def options(update,_:ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    await update.message.reply_text("Hey baby what's up")
+
 @app.post("/")
 async def process_update(request: Request):
     ptb = (
