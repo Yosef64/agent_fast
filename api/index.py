@@ -32,7 +32,7 @@ async def getStudentReferral(update: Update, context: ContextTypes.DEFAULT_TYPE)
         return
     await update.callback_query.message.reply_text("You haven't registered Yet! You have to register to get referral link!")
     return
-async def getLinks(update:Update,context:ContextTypes.DEFAULT_TYPE):
+async def getLinks(update:Update,context:CallbackContext):
     keyboard = [
         [InlineKeyboardButton("Get Agent Referral Link", callback_data='1')],
         [InlineKeyboardButton("Get Student Referral Link", callback_data='2')],
@@ -47,7 +47,7 @@ async def button(update:Update,context:CallbackContext):
     elif query.data == "2":
         await getStudentReferral(update,context)
 
-async def getAmount(update:Update,context:ContextTypes.DEFAULT_TYPE):
+async def getAmount(update:Update,context:CallbackContext):
     stat , ref =  getUserStatById(str(update.message.from_user.id))
     if stat:
         curAmount = stat["totalAmount"]
@@ -55,14 +55,14 @@ async def getAmount(update:Update,context:ContextTypes.DEFAULT_TYPE):
         return
     await update.message.reply_text(f"You haven't registered yet! Press /start button to register")
     return
-async def getNumberOfStud(update:Update,context:ContextTypes.DEFAULT_TYPE):
+async def getNumberOfStud(update:Update,context:CallbackContext):
     stat,ref = getUserStatById(str(update.message.from_user.id))
     if stat:
         numStud = stat["ownStud"]
         await update.message.reply_text(f"You referred {numStud} students. Keep the great work!")
         return
     await update.message.reply_text("You haven't registered yet! press the register button to register!")
-async def getNumberOfTeamStud(update:Update,context:ContextTypes):
+async def getNumberOfTeamStud(update:Update,context:CallbackContext):
     try:
         stat,ref = getUserStatById(str(update.message.from_user.id))
         if stat:
@@ -73,7 +73,7 @@ async def getNumberOfTeamStud(update:Update,context:ContextTypes):
     except Exception as e:
         await update.message.reply_text("There was an error trying to get the numbers. Please try again!")
     return
-async def payMe(update:Update,context:ContextTypes.DEFAULT_TYPE):
+async def payMe(update:Update,context:CallbackContext):
     isRegistered , asked,insuf = askPayment(str(update.message.from_user.id))
     if isRegistered and asked:
         await update.message.reply_text("Thanks for asking a payment for work! Our team will send the money and contact you as soon as possible. Wait patiently!")
@@ -96,19 +96,19 @@ async def ownAgent(update:Update,context:CallbackContext):
     return
 async def options(update:Update,context:CallbackContext):
     text = update.message.text
-    # if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
-    #     await getNumberOfTeamStud(update,context)
-    # elif text == "💰 ብር ለማውጣት":
-    #     await payMe(update,context)
-    # elif text == "🔗 Referral link ለማግኘት":
-    #     await getLinks(update,context)
-    # elif text == "💵 ቀሪ ሂሳብ ለማወቅ":
-    #     await getAmount(update,context)
-    # elif text == "📊 በስራቹ የገቡ የተማሪዎች ብዛት":
-    #     await getNumberOfStud(update,context)
-    # elif text == "በስራቹ የተመዘገቡ ኤጀንቶች ብዛት":
-    #     await ownAgent(update,context)
-    await update.message.reply_text("Hello dude")
+    if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
+        await getNumberOfTeamStud(update,context)
+    elif text == "💰 ብር ለማውጣት":
+        await payMe(update,context)
+    elif text == "🔗 Referral link ለማግኘት":
+        await getLinks(update,context)
+    elif text == "💵 ቀሪ ሂሳብ ለማወቅ":
+        await getAmount(update,context)
+    elif text == "📊 በስራቹ የገቡ የተማሪዎች ብዛት":
+        await getNumberOfStud(update,context)
+    elif text == "በስራቹ የተመዘገቡ ኤጀንቶች ብዛት":
+        await ownAgent(update,context)
+    
 
 @app.post("/")
 async def process_update(request: Request):
