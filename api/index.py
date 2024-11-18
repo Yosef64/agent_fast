@@ -96,18 +96,19 @@ async def ownAgent(update:Update,context:CallbackContext):
     return
 async def options(update:Update,context:CallbackContext):
     text = update.message.text
-    if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
-        await getNumberOfTeamStud(update,context)
-    elif text == "💰 ብር ለማውጣት":
-        await payMe(update,context)
-    elif text == "🔗 Referral link ለማግኘት":
-        await getLinks(update,context)
-    elif text == "💵 ቀሪ ሂሳብ ለማወቅ":
-        await getAmount(update,context)
-    elif text == "📊 በስራቹ የገቡ የተማሪዎች ብዛት":
-        await getNumberOfStud(update,context)
-    elif text == "በስራቹ የተመዘገቡ ኤጀንቶች ብዛት":
-        await ownAgent(update,context)
+    # if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
+    #     await getNumberOfTeamStud(update,context)
+    # elif text == "💰 ብር ለማውጣት":
+    #     await payMe(update,context)
+    # elif text == "🔗 Referral link ለማግኘት":
+    #     await getLinks(update,context)
+    # elif text == "💵 ቀሪ ሂሳብ ለማወቅ":
+    #     await getAmount(update,context)
+    # elif text == "📊 በስራቹ የገቡ የተማሪዎች ብዛት":
+    #     await getNumberOfStud(update,context)
+    # elif text == "በስራቹ የተመዘገቡ ኤጀንቶች ብዛት":
+    #     await ownAgent(update,context)
+    await update.message.reply_text("Hello dude")
 
 @app.post("/")
 async def process_update(request: Request):
