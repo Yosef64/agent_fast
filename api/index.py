@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
@@ -8,10 +8,16 @@ from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,ge
 
 app = FastAPI()
 async def start(update, _: ContextTypes.DEFAULT_TYPE):
-    
-    await update.message.reply_text(intro_text)
+    keyboard = [
+        ["📝 ለኤጀንት ምዝገባ", "🔗 Referral link ለማግኘት"],
+        ["💰 ብር ለማውጣት","📊 በስራቹ የገቡ የተማሪዎች ብዛት"],
+        ["💵 ቀሪ ሂሳብ ለማወቅ","🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት"],
+        ["በስራቹ የተመዘገቡ ኤጀንቶች ብዛት"]
+    ]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+    await update.message.reply_text(intro_text,reply_markup=reply_markup)
 async def getAgentReferal(update: Update, context: CallbackContext):
-    user_id = str(update.callback_query.from_user.id)  # Get user ID from the callback query
+    user_id = str(update.callback_query.from_user.id)
     stat,userRef = getUserStatById(user_id)
 
     if stat and stat["ownStud"] >= 2:
