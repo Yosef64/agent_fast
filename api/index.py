@@ -29,7 +29,7 @@ async def getAgentReferal(update: Update, context: CallbackContext):
         await update.callback_query.message.reply_text("ሁለት ሰው እና ከሁለት ሰው በላይ ማስገባት አለብህ!")
         return
 
-    await update.callback_query.message.reply_text(f"You haven't registered as an agent yet! \nTo register -> /register")
+    await update.callback_query.message.reply_text(f"You haven't registered Yet! You have to register to get referral link!")
     return
 
 async def getStudentReferral(update: Update, context: CallbackContext):
