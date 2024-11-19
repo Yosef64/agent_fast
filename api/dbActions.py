@@ -5,6 +5,7 @@ from datetime import datetime
 userInfo_ref = db.collection("Agents").document("agentInfo")
 userStat_ref = db.collection("Agents").document("agentStat")
 payment_ref = db.collection("paymentReq")
+session_ref = db.collection("session")
 def getUserInfo():
     users = userInfo_ref.get().to_dict()
     return users
@@ -61,6 +62,20 @@ def getOwnAgent(ref):
             count += 1
             
     return count
+
+def addSession(tele_id,referal):
+    ref = session_ref.document(tele_id)
+    if ref.get().exists:
+        return
+    ref.set({"referal":referal})
+    
+def getSession(tele_id):
+    ref = session_ref.document(tele_id).get()
+    if ref.exists:
+        return ref.get()["referal"]
+    return ""
+    
+    
 intro_text = """🎉Well Come to Victory Agent system
 
 Victory official channel👇

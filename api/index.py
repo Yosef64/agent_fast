@@ -3,12 +3,13 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKey
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
-from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent,intro_text
+from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent,intro_text,getSession,addSession
 
 
 app = FastAPI()
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     referal = context.args[0] if context.args else ""
+    addSession(str(update.message.from_user.id),referal)
     keyboard = [
         ["📝 ለኤጀንት ምዝገባ", "🔗 Referral link ለማግኘት"],
         ["💰 ብር ለማውጣት","📊 በስራቹ የገቡ የተማሪዎች ብዛት"],
@@ -101,7 +102,8 @@ async def ownAgent(update:Update,context:CallbackContext):
     await update.message.reply_text(f"{agents} are registered under you!")
     return
 async def register(update,context:CallbackContext):
-    keyboard = [[InlineKeyboardButton("Register", web_app={"url": "https://victory-contest.vercel.app/"})]]
+    tele_id = update.message.from_user.id
+    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agetregister/{tele_id}"})]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     user_id = str(update.message.from_user.id)
     user_name = update.message.from_user.full_name
@@ -155,11 +157,12 @@ def index(request:Request):
 async def agentRegister(request:Request):
     
     data = await request.json()
+    referal = getSession(data["tele_id"])
     try:
-        registerAgent(data,"133thhtht")
+        registerAgent(data,referal)
         return {"message":"ok"}
     except Exception as e:
-        return {"message":e}
+        return Response({"message":e},status_code=500)
 #https://victory-fast.vercel.app/
 # https://api.telegram.org/bot7897490261:AAFMKWSSK0wHuSHlROpQH5WW9v4VsSTlkoA/setWebhook?url=https://victory-fast.vercel.app/
 # 
