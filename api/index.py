@@ -21,7 +21,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware()
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     referal = context.args[0] if context.args else ""
     addSession(str(update.message.from_user.id),referal)
