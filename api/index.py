@@ -174,7 +174,7 @@ async def agentRegister(request:Request):
     referal = getSession(data["tele_id"])
     try:
         registerAgent(data,referal)
-        return {"message":"ok"}
+        return Response({{"message":"ok"}},status_code=200)
     except Exception as e:
         return Response({"message":e},status_code=500)
 #https://victory-fast.vercel.app/
