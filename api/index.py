@@ -7,7 +7,8 @@ from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,ge
 
 
 app = FastAPI()
-async def start(update, _: ContextTypes.DEFAULT_TYPE):
+async def start(update, context: ContextTypes.DEFAULT_TYPE):
+    referal = context.args[0] if context.args else ""
     keyboard = [
         ["📝 ለኤጀንት ምዝገባ", "🔗 Referral link ለማግኘት"],
         ["💰 ብር ለማውጣት","📊 በስራቹ የገቡ የተማሪዎች ብዛት"],
@@ -150,7 +151,15 @@ async def process_update(request: Request):
 @app.get("/")
 def index(request:Request):
     return {"message": "Hello World"}
-
+@app.post("/register")
+async def agentRegister(request:Request):
+    
+    data = await request.json()
+    try:
+        registerAgent(data,"133thhtht")
+        return {"message":"ok"}
+    except Exception as e:
+        return {"message":e}
 #https://victory-fast.vercel.app/
 # https://api.telegram.org/bot7897490261:AAFMKWSSK0wHuSHlROpQH5WW9v4VsSTlkoA/setWebhook?url=https://victory-fast.vercel.app/
 # 
