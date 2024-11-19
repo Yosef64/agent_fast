@@ -60,7 +60,7 @@ async def getAmount(update:Update,context:CallbackContext):
         curAmount = stat["totalAmount"]
         await update.message.reply_text(f"Your current Amount is : {curAmount}")
         return
-    await update.message.reply_text(f"You haven't registered yet! Press /start button to register")
+    await update.message.reply_text(f"You haven't registered yet! Please register first!")
     return
 async def getNumberOfStud(update:Update,context:CallbackContext):
     stat,ref = getUserStatById(str(update.message.from_user.id))
@@ -68,7 +68,7 @@ async def getNumberOfStud(update:Update,context:CallbackContext):
         numStud = stat["ownStud"]
         await update.message.reply_text(f"You referred {numStud} students. Keep the great work!")
         return
-    await update.message.reply_text("You haven't registered yet! press the register button to register!")
+    await update.message.reply_text(f"You haven't registered yet! Please register first!")
 async def getNumberOfTeamStud(update:Update,context:CallbackContext):
     try:
         stat,ref = getUserStatById(str(update.message.from_user.id))
@@ -76,7 +76,7 @@ async def getNumberOfTeamStud(update:Update,context:CallbackContext):
             numTeamStud = stat["agentStud"]
             await update.message.reply_text(f"You are in a team with {numTeamStud} students. Keep the great work!")
             return
-        await update.message.reply_text("You haven't registered yet! press the register button to register.")
+        await update.message.reply_text(f"You haven't registered yet! Please register first!")
     except Exception as e:
         await update.message.reply_text("There was an error trying to get the numbers. Please try again!")
     return
@@ -90,7 +90,7 @@ async def payMe(update:Update,context:CallbackContext):
         else:
             await update.message.reply_text("You already sent a request for payment. Please wait patiently!")
     else:
-        await update.message.reply_text("You haven't registered yet! Press the /register button to register.")
+        await update.message.reply_text(f"You haven't registered yet! Please register first!")
     return
 
 async def ownAgent(update:Update,context:CallbackContext):
