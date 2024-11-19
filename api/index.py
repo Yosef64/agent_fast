@@ -8,16 +8,11 @@ from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,ge
 import os
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 app = FastAPI()
-origins = [
-    "http://localhost",  
-    "http://localhost:8000",  
-    "https://victory-contest.vercel.app",  
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins, 
-    allow_credentials=True,
+    allow_origins=["*"], 
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
