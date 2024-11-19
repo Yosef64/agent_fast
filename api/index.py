@@ -3,10 +3,25 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKey
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent,intro_text,getSession,addSession
 import os
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 app = FastAPI()
+origins = [
+    "http://localhost",  
+    "http://localhost:8000",  
+    "https://victory-contest.vercel.app",  
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins, 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.add_middleware()
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     referal = context.args[0] if context.args else ""
     addSession(str(update.message.from_user.id),referal)
