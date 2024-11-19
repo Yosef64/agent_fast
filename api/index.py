@@ -4,8 +4,8 @@ from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQuer
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
 from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent,intro_text,getSession,addSession
-
-
+import os
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 app = FastAPI()
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     referal = context.args[0] if context.args else ""
@@ -103,7 +103,7 @@ async def ownAgent(update:Update,context:CallbackContext):
     return
 async def register(update,context:CallbackContext):
     tele_id = update.message.from_user.id
-    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agetregister/{tele_id}"})]]
+    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"})]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     user_id = str(update.message.from_user.id)
     user_name = update.message.from_user.full_name
@@ -137,7 +137,7 @@ async def process_update(request: Request):
     ptb = (
     Application.builder()
     .updater(None)
-    .token("7756252447:AAH6fSVh8Q6s2hip4w4wCblqDuOtrLSWSR4") 
+    .token(BOT_TOKEN) 
     .read_timeout(7)
     .get_updates_read_timeout(42)
     .build()
