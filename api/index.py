@@ -39,7 +39,7 @@ async def getAgentReferal(update: Update, context: CallbackContext):
 async def getStudentReferral(update: Update, context: CallbackContext):
     userRef = getUserById(str(update.callback_query.from_user.id))
     if userRef:
-        await update.callback_query.message.reply_text(f"Your Student referral link is: https://t.me/victoryacademy_Bot?start={userRef}")
+        await update.callback_query.message.reply_text(f"Your Student referral link is: https://t.me/victoryacademy_Bot?start={userRef}",callback_data="3")
         return
     await update.callback_query.message.reply_text("You haven't registered Yet! You have to register to get referral link!")
     return
@@ -57,6 +57,8 @@ async def button(update:Update,context:CallbackContext):
         await getAgentReferal(update,context)
     elif query.data == "2":
         await getStudentReferral(update,context)
+    elif query.data == "3":
+        await query.message.delete()
 
 async def getAmount(update:Update,context:CallbackContext):
     stat , ref =  getUserStatById(str(update.message.from_user.id))
@@ -107,7 +109,7 @@ async def ownAgent(update:Update,context:CallbackContext):
     return
 async def register(update,context:CallbackContext):
     tele_id = update.message.from_user.id
-    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"})]]
+    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"},)]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     user_id = str(update.message.from_user.id)
     user_name = update.message.from_user.full_name
@@ -117,12 +119,9 @@ async def register(update,context:CallbackContext):
         if user_id == curAgent:
             await update.message.reply_text("You're already registered as an agent!")
             return
-    sent_message = await update.message.reply_text(f"Hello {user_name}! Now you're applying to register as an agent. Please press the button below to register.", reply_markup=reply_markup)
+    await update.message.reply_text(f"Hello {user_name}! Now you're applying to register as an agent. Please press the button below to register.", reply_markup=reply_markup)
     
-    await context.bot.delete_message(
-        chat_id=update.message.chat_id,
-        message_id=sent_message.message_id
-    )
+   
 async def options(update:Update,context:CallbackContext):
     text = update.message.text
     if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
