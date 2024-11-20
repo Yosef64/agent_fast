@@ -100,7 +100,7 @@ async def ownAgent(update:Update,context:CallbackContext):
     return
 async def register(update,context:CallbackContext):
     tele_id = update.message.from_user.id
-    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"},callback_data="3")]]
+    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"})]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     user_id = str(update.message.from_user.id)
     user_name = update.message.from_user.full_name
@@ -119,11 +119,7 @@ async def button(update:Update,context:CallbackContext):
         await getAgentReferal(update,context)
     elif query.data == "2":
         await getStudentReferral(update,context)
-    elif query.data == "3":
-        chat_id = query.message.chat.id
-        message_id = query.message.message_id
-        await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
-
+    
    
 async def options(update:Update,context:CallbackContext):
     text = update.message.text
