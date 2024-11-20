@@ -118,7 +118,7 @@ async def register(update,context:CallbackContext):
             await update.message.reply_text("You're already registered as an agent!")
             return
     sent_message = await update.message.reply_text(f"Hello {user_name}! Now you're applying to register as an agent. Please press the button below to register.", reply_markup=reply_markup)
-    asyncio.sleep(10)
+    await asyncio.sleep(10)
     await context.bot.delete_message(
         chat_id=update.message.chat_id,
         message_id=sent_message.message_id
