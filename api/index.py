@@ -111,7 +111,7 @@ async def ownAgent(update:Update,context:CallbackContext):
     return
 async def register(update,context:CallbackContext):
     tele_id = update.message.from_user.id
-    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"},)]]
+    keyboard = [[InlineKeyboardButton("Register", web_app={"url": f"https://victory-contest.vercel.app/agentregister/{tele_id}"},callback_data="3")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     user_id = str(update.message.from_user.id)
     user_name = update.message.from_user.full_name
