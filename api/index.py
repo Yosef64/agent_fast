@@ -1,3 +1,4 @@
+import asyncio
 from http import HTTPStatus
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKeyboardMarkup
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
@@ -116,7 +117,12 @@ async def register(update,context:CallbackContext):
         if user_id == curAgent:
             await update.message.reply_text("You're already registered as an agent!")
             return
-    await update.message.reply_text(f"Hello {user_name}! Now you're applying to register as an agent. Please press the button below to register.", reply_markup=reply_markup)
+    sent_message = await update.message.reply_text(f"Hello {user_name}! Now you're applying to register as an agent. Please press the button below to register.", reply_markup=reply_markup)
+    await asyncio.sleep(30)  
+    await context.bot.delete_message(
+        chat_id=update.message.chat_id,
+        message_id=sent_message.message_id
+    )
 async def options(update:Update,context:CallbackContext):
     text = update.message.text
     if text == "🔢 በኤጀንቶቻቹ የገቡ የተማሪዎች ብዛት":
