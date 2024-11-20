@@ -58,7 +58,9 @@ async def button(update:Update,context:CallbackContext):
     elif query.data == "2":
         await getStudentReferral(update,context)
     elif query.data == "3":
-        await query.message.delete()
+        chat_id = query.message.chat.id
+        message_id = query.message.message_id
+        await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
 
 async def getAmount(update:Update,context:CallbackContext):
     stat , ref =  getUserStatById(str(update.message.from_user.id))
