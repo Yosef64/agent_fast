@@ -3,19 +3,13 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update,ReplyKey
 from telegram.ext import Application, CommandHandler,MessageHandler,CallbackQueryHandler,filters,CallbackContext
 from telegram.ext._contexttypes import ContextTypes
 from fastapi import FastAPI, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
+
 from .dbActions import askPayment, getUserInfo, getUserStatById,registerAgent,getUserById,getOwnAgent,intro_text,getSession,addSession
 import os
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], 
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 async def start(update, context: ContextTypes.DEFAULT_TYPE):
     referal = context.args[0] if context.args else ""
     addSession(str(update.message.from_user.id),referal)
@@ -162,16 +156,7 @@ async def process_update(request: Request):
 @app.get("/")
 def index(request:Request):
     return {"message": "Hello World"}
-@app.post("/register")
-async def agentRegister(request:Request):
-    
-    data = await request.json()
-    referal = getSession(data["tele_id"])
-    try:
-        registerAgent(data,referal)
-        return Response({{"message":"ok"}},status_code=200)
-    except Exception as e:
-        return Response({"message":e},status_code=500)
+
 #https://victory-fast.vercel.app/
 # https://api.telegram.org/bot7897490261:AAFMKWSSK0wHuSHlROpQH5WW9v4VsSTlkoA/setWebhook?url=https://victory-fast.vercel.app/
 # 
