@@ -40,7 +40,7 @@ async def getStudentReferral(update: Update, context: CallbackContext):
     userRef = getUserById(str(update.callback_query.from_user.id))
     print(userRef)
     if userRef:
-        await update.callback_query.message.reply_text(f"Your Student referral link is: https://t.me/victoryacademy_Bot?start={userRef}",callback_data="3")
+        await update.callback_query.message.reply_text(f"Your Student referral link is: https://t.me/victoryacademy_Bot?start={userRef}")
         return
     await update.callback_query.message.reply_text("You haven't registered Yet! You have to register to get referral link!")
     return
