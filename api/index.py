@@ -38,7 +38,6 @@ async def getAgentReferal(update: Update, context: CallbackContext):
 
 async def getStudentReferral(update: Update, context: CallbackContext):
     userRef = getUserById(str(update.callback_query.from_user.id))
-    print(userRef)
     if userRef:
         await update.callback_query.message.reply_text(f"Your Student referral link is: https://t.me/victoryacademy_Bot?start={userRef}")
         return
@@ -50,7 +49,7 @@ async def getLinks(update:Update,context:CallbackContext):
         [InlineKeyboardButton("Get Student Referral Link", callback_data='2')],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Now You have to choose which referral like. which means the referral link to let another student join or to add an agent under your side",reply_markup=reply_markup)
+    await update.message.reply_text("Now You have to choose which referral link. which means the referral link to let another student join or to add an agent under your side",reply_markup=reply_markup)
 
 async def getAmount(update:Update,context:CallbackContext):
     stat , ref =  getUserStatById(str(update.message.from_user.id))
@@ -163,5 +162,5 @@ def index(request:Request):
     return {"message": "Hello World"}
 
 #https://victory-fast.vercel.app/
-# https://api.telegram.org/bot7897490261:AAFMKWSSK0wHuSHlROpQH5WW9v4VsSTlkoA/setWebhook?url=https://victory-fast.vercel.app/
+# https://api.telegram.org/bot6839195817:AAHgFjfjCLPBkEnqQwbxn2KUy4iHWrPsjQs/setWebhook?url=https://agent-fast.vercel.app/
 # 
