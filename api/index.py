@@ -161,6 +161,3 @@ async def process_update(request: Request):
 def index(request:Request):
     return {"message": "Hello World"}
 
-#https://victory-fast.vercel.app/
-# https://api.telegram.org/bot6839195817:AAHgFjfjCLPBkEnqQwbxn2KUy4iHWrPsjQs/setWebhook?url=https://agent-fast.vercel.app/
-# 
