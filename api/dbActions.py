@@ -49,7 +49,7 @@ def askPayment(userId):
             curAmount = stat["totalAmount"]
             if curAmount < 100:
                 return [True,False,True]
-            newInfo = {**allInfo[ref],**allStat[ref],"date":currentDate,"id":ref}
+            newInfo = {**allInfo[ref],**allStat[ref],"date":currentDate,"id":ref,"curAmount":curAmount}
             payment_ref.document(ref).set(newInfo)
             return [True,True,False]
     return [False,False,False]
